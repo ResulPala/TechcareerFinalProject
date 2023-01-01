@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿ using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,10 +17,40 @@ namespace DataAccess.Concrete
             optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=OnlineBankingDb;Trusted_Connection=True;");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CustomerAccount>()
+                .HasOne<Customer>(a => a.Customer)
+                .WithMany(c => c.CustomerAccounts)
+                .HasForeignKey(a => a.CustomerId);
 
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<Address> Addresses { get; set; }
+            modelBuilder.Entity<CustomerContactInformation>()
+                .HasOne<Customer>(i => i.Customer)
+                .WithMany(c => c.CustomerContactInformations)
+                .HasForeignKey(i => i.CustomerId);
+
+            modelBuilder.Entity<CustomerRegistryInformation>()
+                .HasOne<Customer>(r => r.Customer)
+                .WithMany(c => c.CustomerRegistryInformations)
+                .HasForeignKey(r => r.CustomerId);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany<EmployeeOperationClaim>(e => e.EmployeeOperationClaims)
+                .WithOne(o => o.Employee)
+                .HasForeignKey(o => o.EmployeeId);
+
+            modelBuilder.Entity<OperationClaim>()
+                .HasMany<EmployeeOperationClaim>(c => c.EmployeeOperationClaims)
+                .WithOne(o => o.OperationClaim)
+                .HasForeignKey(c => c.OperationClaimId);
+        }
+
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<LoginInfo> loginInfos { get; set; }
+        public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<CustomerContactInformation> CustomerContactInformations { get; set; }
+        public DbSet<CustomerRegistryInformation> CustomerRegistryInformations { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeOperationClaim> EmployeeOperationClaims { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
     }
 }

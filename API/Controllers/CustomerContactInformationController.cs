@@ -1,25 +1,26 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs.AccountDtos;
 using Entities.DTOs.AddressDtos;
-using Entities.DTOs.LoginInfoDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("[controller]s")]
+    [Route("[controller]es")]
     [ApiController]
-    public class LoginInfoController : ControllerBase
+    public class CustomerContactInformationController : ControllerBase
     {
-        ILoginInfoService _loginInfoService;
-        public LoginInfoController(ILoginInfoService loginInfoService)
+        ICustomerContactInformationService _addressService;
+        public CustomerContactInformationController(ICustomerContactInformationService addressService)
         {
-            _loginInfoService = loginInfoService;
+            _addressService = addressService;
         }
-        [HttpPost("add")]
-        public IActionResult Add([FromQuery] CreateLoginInfoDto loginInfo)
+        [HttpPost]
+        public IActionResult Add([FromQuery] CreateAddressDto address)
         {
-            var result = _loginInfoService.Add(loginInfo);
+         
+            var result = _addressService.Add(address);
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromQuery] UpdateLoginInfoDto loginInfo)
+        public IActionResult Update([FromQuery] UpdateAddressDto address)
         {
-            var result = _loginInfoService.Update(loginInfo);
+            var result = _addressService.Update(address);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +41,9 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromQuery] DeleteLoginInfoDto loginInfo)
+        public IActionResult Delete([FromQuery] DeleteAddressDto address)
         {
-            var result = _loginInfoService.Delete(loginInfo);
+            var result = _addressService.Delete(address);
             if (result.Success)
             {
                 return Ok(result);
@@ -53,7 +54,7 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _loginInfoService.GetAll();
+            var result = _addressService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -66,7 +67,7 @@ namespace API.Controllers
 
         public IActionResult GetById(int id)
         {
-            var result = _loginInfoService.GetById(id);
+            var result = _addressService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

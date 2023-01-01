@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IAccountService
+    public interface ICustomerAccountService
     {
-        IDataResult<Account> GetById(int id);
-        IDataResult<List<Account>> GetAll();
+        IDataResult<CustomerAccount> GetById(int id);
+        IDataResult<List<CustomerAccount>> GetAll();
         IResult Add(CreateAccountDto account);
         IResult Update(UpdateAccountDto account);
         IResult Delete(DeleteAccountDto account);

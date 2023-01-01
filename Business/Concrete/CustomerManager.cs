@@ -26,10 +26,10 @@ namespace Business.Concrete
         {
 
             var xx = new Customer();
-            xx.First_name = customer.First_name;
-            xx.Last_name= customer.Last_name;
-            xx.Identity_number= customer.Identity_number;
-            xx.Customer_number = customer.Customer_number;
+            xx.FirstName = customer.First_name;
+            xx.LastName= customer.Last_name;
+            xx.IdentityNumber= customer.Identity_number;
+            xx.CustomerNumber = customer.Customer_number;
 
             _customerDal.Add(xx);
             return new SuccessResult(Messages.Success);

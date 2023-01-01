@@ -1,26 +1,25 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
 using Entities.DTOs.AccountDtos;
-using Entities.DTOs.AddressDtos;
+using Entities.DTOs.CustomerDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("[controller]es")]
+    [Route("[controller]s")]
     [ApiController]
-    public class AddressController : ControllerBase
+    public class CustomerAccountController : ControllerBase
     {
-        IAddressService _addressService;
-        public AddressController(IAddressService addressService)
+        ICustomerAccountService _accountService;
+        public CustomerAccountController(ICustomerAccountService accountService)
         {
-            _addressService = addressService;
+            _accountService = accountService;
         }
-        [HttpPost]
-        public IActionResult Add([FromQuery] CreateAddressDto address)
+        [HttpPost("add")]
+        public IActionResult Add([FromQuery] CreateAccountDto account)
         {
-         
-            var result = _addressService.Add(address);
+            var result = _accountService.Add(account);
             if (result.Success)
             {
                 return Ok(result);
@@ -29,9 +28,9 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromQuery] UpdateAddressDto address)
+        public IActionResult Update([FromQuery] UpdateAccountDto account)
         {
-            var result = _addressService.Update(address);
+            var result = _accountService.Update(account);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,9 +40,9 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromQuery] DeleteAddressDto address)
+        public IActionResult Delete([FromQuery] DeleteAccountDto account)
         {
-            var result = _addressService.Delete(address);
+            var result = _accountService.Delete(account);
             if (result.Success)
             {
                 return Ok(result);
@@ -54,7 +53,7 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _addressService.GetAll();
+            var result = _accountService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -67,12 +66,13 @@ namespace API.Controllers
 
         public IActionResult GetById(int id)
         {
-            var result = _addressService.GetById(id);
+            var result = _accountService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
     }
 }

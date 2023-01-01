@@ -12,22 +12,22 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class AddressManager : IAddressService
+    public class CustomerContactInformationManager : ICustomerContactInformationService
     {
-        IAddressDal _addressDal;
-        public AddressManager(IAddressDal addressDal)
+        ICustomerContactInformationDal _addressDal;
+        public CustomerContactInformationManager(ICustomerContactInformationDal addressDal)
         {
             _addressDal = addressDal;
         }
 
         public IResult Add(CreateAddressDto address)
         {
-            var xx = new Address();
+            var xx = new CustomerContactInformation();
             xx.CustomerId = address.CustomerId;
             xx.Country = address.Country;   
             xx.City = address.City; 
-            xx.Address_detail = address.Address_detail;
-            xx.Phone_number = address.Phone_number;
+            xx.AddressDetail = address.Address_detail;
+            xx.MobilePhoneNumber = address.Phone_number;
             xx.Email = address.Email;
 
             _addressDal.Add(xx);
@@ -36,31 +36,31 @@ namespace Business.Concrete
 
         public IResult Delete(DeleteAddressDto address)
         {
-            var xx = new Address();
+            var xx = new CustomerContactInformation();
             xx.Id = address.Id;
             _addressDal.Delete(xx);    
             return new SuccessResult(Messages.Success); 
         }
 
-        public IDataResult<List<Address>> GetAll()
+        public IDataResult<List<CustomerContactInformation>> GetAll()
         {
-            return new SuccessDataResult<List<Address>>(_addressDal.GetAll(),Messages.Success);
+            return new SuccessDataResult<List<CustomerContactInformation>>(_addressDal.GetAll(),Messages.Success);
         }
 
-        public IDataResult<Address> GetById(int id)
+        public IDataResult<CustomerContactInformation> GetById(int id)
         {
-            return new SuccessDataResult<Address>(_addressDal.GetById(x=>x.Id == id));
+            return new SuccessDataResult<CustomerContactInformation>(_addressDal.GetById(x=>x.Id == id));
         }
 
         public IResult Update(UpdateAddressDto address)
         {
-            var xx = new Address();
+            var xx = new CustomerContactInformation();
             xx.Id = address.Id;
             xx.CustomerId = address.CustomerId;
             xx.Country = address.Country;
             xx.City=address.City;
-            xx.Address_detail = address.Address_detail;
-            xx.Phone_number = address.Phone_number;
+            xx.AddressDetail = address.Address_detail;
+            xx.MobilePhoneNumber = address.Phone_number;
             xx.Email = address.Email;
 
             _addressDal.Update(xx);

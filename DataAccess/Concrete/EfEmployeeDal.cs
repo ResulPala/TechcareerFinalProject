@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class EfLoginInfoDal : EfEntityRepositoryBase<LoginInfo, OnlineBankingContext>, ILoginInfoDal
+    public class EfEmployeeDal : EfEntityRepositoryBase<Employee, OnlineBankingContext>, IEmployeeDal
     {
     }
 }

@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Account : IEntity
+    public class CustomerRegistryInformation : IEntity
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public Customer Customer { get; set; }
-        public int Balance { get; set; }
-        public DateTime OpenTime{ get; set; } = DateTime.Now;
-        public DateTime ClosedTime { get; set; }
-        public int Account_type { get; set; }
+
     }
 }

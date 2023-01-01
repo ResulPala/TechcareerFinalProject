@@ -12,21 +12,19 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class LoginInfoManager : ILoginInfoService
+    public class CustomerRegistryInformationManager : ICustomerRegistryInformationService
     {
-        ILoginInfoDal _loginInfoDal;
-        public LoginInfoManager(ILoginInfoDal loginInfoDal)
+        ICustomerRegistryInformationDal _loginInfoDal;
+        public CustomerRegistryInformationManager(ICustomerRegistryInformationDal loginInfoDal)
         {
             _loginInfoDal = loginInfoDal;   
         }
 
         public IResult Add(CreateLoginInfoDto loginInfo)
         {
-            var xx = new LoginInfo();
+            var xx = new CustomerRegistryInformation();
             xx.CustomerId = loginInfo.CustomerId;   
-            xx.Answer = loginInfo.Answer;
-            xx.Question = loginInfo.Question;
-            xx.Password= loginInfo.Password;    
+                
 
             _loginInfoDal.Add(xx);
             return new SuccessResult(Messages.Success);
@@ -34,30 +32,28 @@ namespace Business.Concrete
 
         public IResult Delete(DeleteLoginInfoDto loginInfo)
         {
-            var xx = new LoginInfo();
+            var xx = new CustomerRegistryInformation();
             xx.Id = loginInfo.Id;
             _loginInfoDal.Delete(xx);
             return new SuccessResult(Messages.Deleted);
         }
 
-        public IDataResult<List<LoginInfo>> GetAll()
+        public IDataResult<List<CustomerRegistryInformation>> GetAll()
         {
-            return new SuccessDataResult<List<LoginInfo>>(_loginInfoDal.GetAll(),Messages.Success);
+            return new SuccessDataResult<List<CustomerRegistryInformation>>(_loginInfoDal.GetAll(),Messages.Success);
         }
 
-        public IDataResult<LoginInfo> GetById(int id)
+        public IDataResult<CustomerRegistryInformation> GetById(int id)
         {
-            return new SuccessDataResult<LoginInfo>(_loginInfoDal.GetById(x=> x.Id==id));
+            return new SuccessDataResult<CustomerRegistryInformation>(_loginInfoDal.GetById(x=> x.Id==id));
         }
 
         public IResult Update(UpdateLoginInfoDto loginInfo)
         {
-            var xx =new LoginInfo();
+            var xx =new CustomerRegistryInformation();
             xx.Id = loginInfo.Id;
             xx.CustomerId = loginInfo.CustomerId;
-            xx.Password = loginInfo.Password;
-            xx.Question = loginInfo.Question;
-            xx.Answer = loginInfo.Answer;
+            
 
             _loginInfoDal.Update(xx);
             return new SuccessResult(Messages.Success);

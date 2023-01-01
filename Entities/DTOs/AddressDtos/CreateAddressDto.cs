@@ -13,7 +13,7 @@ namespace Entities.DTOs.AddressDtos
         public string Country { get; set; }
         public string City { get; set; }
         public string Address_detail { get; set; }
-        public int Phone_number { get; set; }
+        public string Phone_number { get; set; }
         public string Email { get; set; }
     }
 }

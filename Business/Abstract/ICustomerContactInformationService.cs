@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IAddressService
+    public interface ICustomerContactInformationService
     {
-        IDataResult<Address> GetById(int id);
-        IDataResult<List<Address>> GetAll();
+        IDataResult<CustomerContactInformation> GetById(int id);
+        IDataResult<List<CustomerContactInformation>> GetAll();
         IResult Add(CreateAddressDto address);
         IResult Update(UpdateAddressDto address);
         IResult Delete(DeleteAddressDto address);

@@ -2,6 +2,7 @@ using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,14 +17,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICustomerService, CustomerManager>();
 builder.Services.AddSingleton<ICustomerDal, EfCustomerDal>();
 
-builder.Services.AddSingleton<IAccountService, AccountManager>();
-builder.Services.AddSingleton<IAccountDal, EfAccountDal>();
+builder.Services.AddSingleton<ICustomerAccountService, CustomerAccountManager>();
+builder.Services.AddSingleton<ICustomerAccountDal, EfCustomerAccountDal>();
 
-builder.Services.AddSingleton<IAddressService, AddressManager>();
-builder.Services.AddSingleton<IAddressDal, EfAddressDal>();
+builder.Services.AddSingleton<ICustomerContactInformationService, CustomerContactInformationManager>();
+builder.Services.AddSingleton<ICustomerContactInformationDal, EfCustomerContactInformationDal>();
 
-builder.Services.AddSingleton<ILoginInfoService, LoginInfoManager>();
-builder.Services.AddSingleton<ILoginInfoDal, EfLoginInfoDal>();
+builder.Services.AddSingleton<ICustomerRegistryInformationService, CustomerRegistryInformationManager>();
+builder.Services.AddSingleton<ICustomerRegistryInformationDal, EfCustomerRegistryInformationDal>();
 
 
 var app = builder.Build();
