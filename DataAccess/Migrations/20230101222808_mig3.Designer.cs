@@ -4,14 +4,16 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(OnlineBankingContext))]
-    partial class OnlineBankingContextModelSnapshot : ModelSnapshot
+    [Migration("20230101222808_mig3")]
+    partial class mig3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,28 +112,6 @@ namespace DataAccess.Migrations
                     b.ToTable("CustomerContactInformations");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.CustomerOperationClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("OperationClaimId");
-
-                    b.ToTable("CustomerOperationClaims");
-                });
-
             modelBuilder.Entity("Entities.Concrete.CustomerRegistryInformation", b =>
                 {
                     b.Property<int>("Id")
@@ -153,6 +133,52 @@ namespace DataAccess.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerRegistryInformations");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EmployeeNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdentityNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.EmployeeOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("OperationClaimId");
+
+                    b.ToTable("EmployeeOperationClaims");
                 });
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
@@ -192,25 +218,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.CustomerOperationClaim", b =>
-                {
-                    b.HasOne("Entities.Concrete.Customer", "Customer")
-                        .WithMany("CustomerOperationClaims")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
-                        .WithMany("CustomerOperationClaims")
-                        .HasForeignKey("OperationClaimId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("OperationClaim");
-                });
-
             modelBuilder.Entity("Entities.Concrete.CustomerRegistryInformation", b =>
                 {
                     b.HasOne("Entities.Concrete.Customer", "Customer")
@@ -222,20 +229,42 @@ namespace DataAccess.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.EmployeeOperationClaim", b =>
+                {
+                    b.HasOne("Entities.Concrete.Employee", "Employee")
+                        .WithMany("EmployeeOperationClaims")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
+                        .WithMany("EmployeeOperationClaims")
+                        .HasForeignKey("OperationClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("OperationClaim");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Customer", b =>
                 {
                     b.Navigation("CustomerAccounts");
 
                     b.Navigation("CustomerContactInformations");
 
-                    b.Navigation("CustomerOperationClaims");
-
                     b.Navigation("CustomerRegistryInformations");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Employee", b =>
+                {
+                    b.Navigation("EmployeeOperationClaims");
                 });
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
-                    b.Navigation("CustomerOperationClaims");
+                    b.Navigation("EmployeeOperationClaims");
                 });
 #pragma warning restore 612, 618
         }

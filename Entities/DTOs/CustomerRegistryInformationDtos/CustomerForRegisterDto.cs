@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DTOs.CustomerDtos
+namespace Entities.DTOs.CustomerRegistryInformationDtos
 {
-    public class CreateCustomerDto
+    public class CustomerForRegisterDto
     {
+        public int CustomerNumber { get; set; }
+        public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public long IdentityNumber { get; set; }
-        public int CustomerNumber { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace Business.Concrete
 
         public IDataResult<CustomerAccount> GetById(int id)
         {
-            return new SuccessDataResult<CustomerAccount>(_accountDal.GetById(x=>x.Id==id),Messages.Success);
+            return new SuccessDataResult<CustomerAccount>(_accountDal.Get(x=>x.Id==id),Messages.Success);
         }
 
         public IResult Update(UpdateAccountDto account)

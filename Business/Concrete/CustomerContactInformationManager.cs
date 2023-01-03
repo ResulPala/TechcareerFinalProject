@@ -49,7 +49,7 @@ namespace Business.Concrete
 
         public IDataResult<CustomerContactInformation> GetById(int id)
         {
-            return new SuccessDataResult<CustomerContactInformation>(_addressDal.GetById(x=>x.Id == id));
+            return new SuccessDataResult<CustomerContactInformation>(_addressDal.Get(x=>x.Id == id));
         }
 
         public IResult Update(UpdateAddressDto address)

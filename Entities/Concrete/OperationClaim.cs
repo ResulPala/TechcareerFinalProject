@@ -11,6 +11,6 @@ namespace Entities.Concrete
     {
         public int Id { get; set; }
         public string Claim { get; set; }
-        public ICollection<EmployeeOperationClaim> EmployeeOperationClaims { get; set; }    
+        public ICollection<CustomerOperationClaim> CustomerOperationClaims { get; set; }    
     }
 }

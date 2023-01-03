@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Business.Utilities;
 using Business.Utilities.Constant.Messages;
 using Business.Utilities.Results;
 using DataAccess.Abstract;
@@ -22,17 +24,26 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IResult Add(CreateCustomerDto customer)
+        [SecuredOperation("admin")]
+        public IResult Add(CreateCustomerDto createCustomerDto)
         {
+            var result = BusinessRules.Run(
+                CheckIfCustomerExistWithIdentitynumber(createCustomerDto.IdentityNumber)
+                );
 
-            var xx = new Customer();
-            xx.FirstName = customer.First_name;
-            xx.LastName= customer.Last_name;
-            xx.IdentityNumber= customer.Identity_number;
-            xx.CustomerNumber = customer.Customer_number;
+            if (result != null)
+            {
+                return result;
+            }
 
-            _customerDal.Add(xx);
-            return new SuccessResult(Messages.Success);
+            var customer = new Customer();
+            customer.FirstName = createCustomerDto.FirstName;
+            customer.LastName= createCustomerDto.LastName;
+            customer.IdentityNumber= createCustomerDto.IdentityNumber;
+            customer.CustomerNumber = createCustomerDto.CustomerNumber;
+
+            _customerDal.Add(customer);
+            return new SuccessResult(Messages.CustomerAddedSuccessfully);
 
         }
 
@@ -49,9 +60,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.Success);
         }
 
+        public IDataResult<Customer> GetByCustomerNumber(int customerNumber)
+        {
+            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.CustomerNumber == customerNumber));
+        }
+
         public IDataResult<Customer> GetById(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.GetById(x=>x.Id==id));
+            return new SuccessDataResult<Customer>(_customerDal.Get(x=>x.Id==id));
         }
 
 
@@ -64,5 +80,19 @@ namespace Business.Concrete
             _customerDal.Update(customer);
             return new SuccessResult(Messages.Success);
         }
+
+        //BUSINESS RULES
+
+        private IResult CheckIfCustomerExistWithIdentitynumber(long identityNumber)
+        {
+            var identityNumberExistence = _customerDal.GetAll(c => c.IdentityNumber == identityNumber).Any();
+            if (identityNumberExistence)
+            {
+                return new ErrorResult(Messages.CustomerAlreadyExistError);
+            }
+
+            return new SuccessResult();
+        }
+
     }
 }

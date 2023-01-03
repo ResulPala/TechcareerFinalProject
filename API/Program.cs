@@ -1,5 +1,6 @@
 using Business.Abstract;
 using Business.Concrete;
+using Business.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using Entities.Concrete;
@@ -25,6 +26,10 @@ builder.Services.AddSingleton<ICustomerContactInformationDal, EfCustomerContactI
 
 builder.Services.AddSingleton<ICustomerRegistryInformationService, CustomerRegistryInformationManager>();
 builder.Services.AddSingleton<ICustomerRegistryInformationDal, EfCustomerRegistryInformationDal>();
+
+builder.Services.AddSingleton<IAuthService, AuthManager>();
+builder.Services.AddSingleton<ITokenHelper, JwtHelper>();
+
 
 
 var app = builder.Build();

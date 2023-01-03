@@ -1,9 +1,10 @@
 ﻿using Business.Abstract;
+using Business.Utilities;
 using Business.Utilities.Constant.Messages;
 using Business.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.DTOs.LoginInfoDtos;
+using Entities.DTOs.CustomerRegistryInformationDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,49 +15,63 @@ namespace Business.Concrete
 {
     public class CustomerRegistryInformationManager : ICustomerRegistryInformationService
     {
-        ICustomerRegistryInformationDal _loginInfoDal;
-        public CustomerRegistryInformationManager(ICustomerRegistryInformationDal loginInfoDal)
-        {
-            _loginInfoDal = loginInfoDal;   
-        }
+        ICustomerRegistryInformationDal _customerRegistryInformationDal;
+        ICustomerService _customerService;
 
-        public IResult Add(CreateLoginInfoDto loginInfo)
+        public CustomerRegistryInformationManager(ICustomerRegistryInformationDal customerRegistryInformationDal, ICustomerService customerService)
         {
-            var xx = new CustomerRegistryInformation();
-            xx.CustomerId = loginInfo.CustomerId;   
-                
-
-            _loginInfoDal.Add(xx);
-            return new SuccessResult(Messages.Success);
-        }
-
-        public IResult Delete(DeleteLoginInfoDto loginInfo)
-        {
-            var xx = new CustomerRegistryInformation();
-            xx.Id = loginInfo.Id;
-            _loginInfoDal.Delete(xx);
-            return new SuccessResult(Messages.Deleted);
+            _customerRegistryInformationDal = customerRegistryInformationDal;
+            _customerService = customerService;
         }
 
         public IDataResult<List<CustomerRegistryInformation>> GetAll()
         {
-            return new SuccessDataResult<List<CustomerRegistryInformation>>(_loginInfoDal.GetAll(),Messages.Success);
+            return new SuccessDataResult<List<CustomerRegistryInformation>>(_customerRegistryInformationDal.GetAll());
         }
 
-        public IDataResult<CustomerRegistryInformation> GetById(int id)
+        public IDataResult<CustomerRegistryInformation> GetByCustomerId(int customerId)
         {
-            return new SuccessDataResult<CustomerRegistryInformation>(_loginInfoDal.GetById(x=> x.Id==id));
+            return new SuccessDataResult<CustomerRegistryInformation>(_customerRegistryInformationDal.Get(r => r.CustomerId == customerId));
         }
 
-        public IResult Update(UpdateLoginInfoDto loginInfo)
+        public IResult Add(CustomerRegistryInformation customerRegistryInformation)
         {
-            var xx =new CustomerRegistryInformation();
-            xx.Id = loginInfo.Id;
-            xx.CustomerId = loginInfo.CustomerId;
-            
-
-            _loginInfoDal.Update(xx);
+            var result = BusinessRules.Run(
+                CheckIfCustomerNotExistWithCustomerId(customerRegistryInformation.CustomerId), //bu method olmadan kendisi nasil bir hata verir?
+                CheckIfCustomerAlreadyRegistered(customerRegistryInformation.CustomerId)
+                );
+            _customerRegistryInformationDal.Add(customerRegistryInformation);
             return new SuccessResult(Messages.Success);
         }
+
+        public List<OperationClaim> GetOperationClaims(CustomerRegistryInformation customerRegistryInformation)
+        {
+            return _customerRegistryInformationDal.GetClaims(customerRegistryInformation);
+        }
+
+        //BUSINESS CODES
+
+        private IResult CheckIfCustomerNotExistWithCustomerId(int customerId)
+        {
+            var customerExistence = _customerService.GetById(customerId);
+            if (customerExistence == null)
+            {
+                return new ErrorResult(Messages.CustomerNotExistError);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCustomerAlreadyRegistered(int customerId)
+        {
+            var result = _customerRegistryInformationDal.GetAll(c => c.CustomerId == customerId).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.CustomerAlreadyRegisteredError);
+            };
+            return new SuccessResult();
+        }
+
+        
     }
 }

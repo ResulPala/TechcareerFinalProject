@@ -34,13 +34,13 @@ namespace DataAccess.Concrete
                 .WithMany(c => c.CustomerRegistryInformations)
                 .HasForeignKey(r => r.CustomerId);
 
-            modelBuilder.Entity<Employee>()
-                .HasMany<EmployeeOperationClaim>(e => e.EmployeeOperationClaims)
-                .WithOne(o => o.Employee)
-                .HasForeignKey(o => o.EmployeeId);
+            modelBuilder.Entity<CustomerOperationClaim>()
+                .HasOne<Customer>(r => r.Customer)
+                .WithMany(c => c.CustomerOperationClaims)
+                .HasForeignKey(r => r.CustomerId);
 
             modelBuilder.Entity<OperationClaim>()
-                .HasMany<EmployeeOperationClaim>(c => c.EmployeeOperationClaims)
+                .HasMany<CustomerOperationClaim>(c => c.CustomerOperationClaims)
                 .WithOne(o => o.OperationClaim)
                 .HasForeignKey(c => c.OperationClaimId);
         }
@@ -49,8 +49,7 @@ namespace DataAccess.Concrete
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }
         public DbSet<CustomerContactInformation> CustomerContactInformations { get; set; }
         public DbSet<CustomerRegistryInformation> CustomerRegistryInformations { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<EmployeeOperationClaim> EmployeeOperationClaims { get; set; }
+        public DbSet<CustomerOperationClaim> CustomerOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
     }
 }

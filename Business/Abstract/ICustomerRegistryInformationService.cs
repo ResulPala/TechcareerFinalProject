@@ -1,6 +1,6 @@
 ﻿using Business.Utilities.Results;
 using Entities.Concrete;
-using Entities.DTOs.LoginInfoDtos;
+using Entities.DTOs.CustomerRegistryInformationDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,9 @@ namespace Business.Abstract
 {
     public interface ICustomerRegistryInformationService
     {
-        IDataResult<CustomerRegistryInformation> GetById(int id);
         IDataResult<List<CustomerRegistryInformation>> GetAll();
-        IResult Add(CreateLoginInfoDto loginInfo);
-        IResult Update(UpdateLoginInfoDto loginInfo);
-        IResult Delete(DeleteLoginInfoDto loginInfo);
+        IDataResult<CustomerRegistryInformation> GetByCustomerId(int customerId);
+        List<OperationClaim> GetOperationClaims(CustomerRegistryInformation customerRegistryInformation);
+        IResult Add(CustomerRegistryInformation customerRegistryInformation);
     }
 }

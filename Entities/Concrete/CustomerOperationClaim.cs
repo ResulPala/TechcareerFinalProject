@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class EmployeeOperationClaim : IEntity
+    public class CustomerOperationClaim : IEntity
     {
         public int Id { get; set; }
-        public int EmployeeId { get; set; }
+        public int CustomerId { get; set; }
         public int OperationClaimId { get; set; }
-        public Employee Employee { get; set; }
+        public Customer Customer { get; set; }
         public OperationClaim OperationClaim { get; set; }
     }
 }
