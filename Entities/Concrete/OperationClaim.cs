@@ -9,6 +9,10 @@ namespace Entities.Concrete
 {
     public class OperationClaim : IEntity
     {
+        public OperationClaim()
+        {
+            CustomerOperationClaims = new HashSet<CustomerOperationClaim>();
+        }
         public int Id { get; set; }
         public string Claim { get; set; }
         public ICollection<CustomerOperationClaim> CustomerOperationClaims { get; set; }    

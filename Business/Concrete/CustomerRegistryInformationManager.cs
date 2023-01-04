@@ -40,8 +40,12 @@ namespace Business.Concrete
                 CheckIfCustomerNotExistWithCustomerId(customerRegistryInformation.CustomerId), //bu method olmadan kendisi nasil bir hata verir?
                 CheckIfCustomerAlreadyRegistered(customerRegistryInformation.CustomerId)
                 );
+            if (result != null)
+            {
+                return result;
+            }
             _customerRegistryInformationDal.Add(customerRegistryInformation);
-            return new SuccessResult(Messages.Success);
+            return new SuccessResult(Messages.CustomerRegistered);
         }
 
         public List<OperationClaim> GetOperationClaims(CustomerRegistryInformation customerRegistryInformation)

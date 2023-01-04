@@ -28,7 +28,7 @@ namespace API.Controllers
             var result = _authService.CreateAccessToken(customerToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result.Data);
             }
             return BadRequest(result.Message);
         }

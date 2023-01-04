@@ -14,11 +14,13 @@ namespace DataAccess.Concrete
         {
             using (var context = new OnlineBankingContext())
             {
+                
                 var result = from operationClaim in context.OperationClaims
                              join customerOperationClaim in context.CustomerOperationClaims
                                on operationClaim.Id equals customerOperationClaim.OperationClaimId
-                             where operationClaim.Id == customerRegistryInformation.CustomerId
+                             where customerOperationClaim.CustomerId == customerRegistryInformation.CustomerId
                              select new OperationClaim { Id = operationClaim.Id, Claim = operationClaim.Claim };
+                
                 return result.ToList();
             }
         }

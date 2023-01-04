@@ -28,15 +28,21 @@ namespace Business.Concrete
             _customerService = customerService;
         }
 
-        public IDataResult<CustomerRegistryInformation> Register(CustomerForRegisterDto customerForRegisterDto, string password)
+        public IResult Register(CustomerForRegisterDto customerForRegisterDto, string password)
         {
+            var result = BusinessRules.Run(
+                CheckIfCustomerExist(customerForRegisterDto.CustomerNumber)
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            var customer = CheckIfCustomerExist(customerForRegisterDto.CustomerNumber);
-            if (!customer.Success)
-            {
-                return new ErrorDataResult<CustomerRegistryInformation>(Messages.CustomerAlreadyExistError);
-            }
+
+            var customer = _customerService.GetByCustomerNumber(customerForRegisterDto.CustomerNumber);
             var customerId = customer.Data.Id; //hatayi runtimeda burda firlatiyor
             var customerRegistryInformation = new CustomerRegistryInformation
             {
@@ -45,8 +51,7 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
             };
 
-            _customerRegistryInformationService.Add(customerRegistryInformation);
-            return new SuccessDataResult<CustomerRegistryInformation>(customerRegistryInformation, Messages.CustomerRegistered);
+            return _customerRegistryInformationService.Add(customerRegistryInformation);         
         }
 
         public IDataResult<CustomerRegistryInformation> Login(CustomerForLoginDto customerForLoginDto)
@@ -61,7 +66,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<CustomerRegistryInformation>(Messages.PasswordError);
             }
-            return new SuccessDataResult<CustomerRegistryInformation>(Messages.LoginSuccessfully);
+            return new SuccessDataResult<CustomerRegistryInformation>(customerToCheck.Data ,Messages.LoginSuccessfully);
             
             
         }
@@ -78,15 +83,17 @@ namespace Business.Concrete
 
         //BUSINESS CODES
 
-        private IDataResult<Customer> CheckIfCustomerExist(int customerNumber)
+        private IResult CheckIfCustomerExist(int customerNumber)
         {
             var customer = _customerService.GetByCustomerNumber(customerNumber);
-            if (customer == null)
+            if (customer.Data == null)
             {
-                return new ErrorDataResult<Customer>(Messages.CustomerNotExistError);
+                return new ErrorResult(Messages.CustomerNotExistError);
             }
-            return new SuccessDataResult<Customer>(customer.Data);
+            return new SuccessResult();
         }
+        
+        
 
         
     }
